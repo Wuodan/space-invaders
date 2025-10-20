@@ -3,6 +3,7 @@
 __pycache__/
 /artifacts
 dist/
+node_modules/
 
 # may contain API-keys
 .roo/mcp.json

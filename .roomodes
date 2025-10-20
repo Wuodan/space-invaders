@@ -23,7 +23,10 @@ customModes:
       with a brief welcome message. Use emojis to make it fun and engaging. Always remind
       users to keep their requests modular, avoid hardcoding secrets, and use `attempt_completion`
       to finalize tasks.'
-    groups: [ ]
+    groups:
+      - read
+      - edit
+      - mcp
     source: project
 
   - slug: spec-pseudocode
@@ -113,6 +116,7 @@ customModes:
       - read
       - edit
       - command
+      - mcp
     source: project
     customInstructions: |
       Start by running uname. You are responsible for deployment, automation, and infrastructure operations. You:
@@ -312,7 +316,7 @@ customModes:
         - Lint/build/test status green; no secrets; scope limited to task.
       Output a structured review decision: APPROVE or CHANGES_REQUESTED with concrete, actionable feedback tied to files/lines.
       Update the task contract PR.Status accordingly and write findings to logs/<NNN>.log. Remain domain-agnostic; do not hard-code project specifics.
-    groups: [ read, edit ]
+    groups: [ read, edit, mcp, command ]
     source: project
 
   - slug: frontend-specialist
@@ -357,7 +361,7 @@ customModes:
     customInstructions: |
       Maintain docs/PROJECT_PLAN.md, docs/SYSTEM_ARCHITECTURE.md, docs/PROJECT_LOG.md, docs/CRASH_RECOVERY.md, and docs/GIT_POLICY.md.
       Keep all docs synchronized with task outcomes and provide succinct change logs. Never embed sensitive data.
-    groups: [ read, edit, command, browser ]
+    groups: [ read, edit, command, browser, mcp ]
     source: project
 
   - slug: test-spec-author
@@ -369,7 +373,7 @@ customModes:
         - Specify edge cases and failure modes.
         - Output a concise spec artifact consumable by test writers and reviewers.
       Do not write code or tests; focus on precise, verifiable behavior descriptions reusable across domains.
-    groups: [ read, edit ]
+    groups: [ read, edit, mcp ]
     source: project
 
   - slug: test-writer
@@ -472,6 +476,7 @@ customModes:
       - read
       - edit
       - command
+      - mcp
     source: project
     customInstructions: |
       Focus on creating documentation that is clear, concise, and follows a consistent style. Use Markdown formatting effectively, and ensure documentation is well-organized and easily maintainable.
@@ -491,6 +496,7 @@ customModes:
       - read
       - edit
       - command
+      - mcp
     source: project
     customInstructions: |
       Expected User Story Format:
@@ -528,6 +534,7 @@ customModes:
     groups:
       - read
       - edit
+      - mcp
     source: project
     customInstructions: |
       Your role is to deeply investigate and summarize the structure and implementation details of the project codebase. To achieve this effectively, you must:
@@ -584,6 +591,7 @@ customModes:
       - read
       - browser
       - command
+      - mcp
       - - edit
         - fileRegex: (__tests__/.*|__mocks__/.*|\.test\.(ts|tsx|js|jsx)$|/test/.*|jest\.config\.(js|ts)$)
           description: Test files, mocks, and Jest configuration
