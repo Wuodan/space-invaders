@@ -340,7 +340,7 @@ customModes:
 
 - slug: docs_architect
   name: 📝 Docs Architect
-  roleDefinition: Owns structured documentation: task contracts, API specs, system architecture, and recovery procedures.
+  roleDefinition: 'Owns structured documentation: task contracts, API specs, system architecture, and recovery procedures.'
   customInstructions: |
     Maintain docs/PROJECT_PLAN.md, docs/SYSTEM_ARCHITECTURE.md, docs/PROJECT_LOG.md, docs/CRASH_RECOVERY.md, and docs/GIT_POLICY.md.
     Keep all docs synchronized with task outcomes and provide succinct change logs. Never embed sensitive data.
