@@ -83,6 +83,19 @@ Defines all active agents, their roles, and the global execution policy.
 | 002 | Module 2 | module_specialist | 001 | Implement dependent subsystem | main |
 | 003 | Integration | coordinator | 001,002 | Combine subsystems | main |
 
+### Agent Coordination Patterns
+- **Orchestrator → Specialist**: High-level agents (coordinator, architect) define structure and interfaces
+- **Specialist → Implementation**: Implementation agents handle complete functional units within defined boundaries
+- **Avoid Line-by-Line**: Never delegate individual functions, classes, or components as separate tasks
+- **Functional Completeness**: Each task should deliver a working, testable increment
+
+### Task Decomposition Examples
+| Too Granular | Too Large | Just Right |
+|-------------|-----------|------------|
+| "Add input field" | "Build entire frontend" | "Implement user registration form" |
+| "Write CSS for button" | "Style complete application" | "Create component library" |
+| "Add console.log" | "Implement full game engine" | "Build collision detection system" |
+
 ## Global Policies
 - File-based IPC
 - Retry once on failure
@@ -90,6 +103,24 @@ Defines all active agents, their roles, and the global execution policy.
 - Git branching and PR workflow (see GIT_POLICY.md)
 - True TDD enforcement: When TDD is used, produce **test specification first**, then **write failing tests**, only then **implement** code until green. Post-implementation tests are verification, not TDD.
 - Planning gate: Implementation begins only after PRODUCT_SPEC.md exists and PROJECT_PLAN.md defines agents/DAG. The process is **non-interrupting**: proceed autonomously using documented assumptions without waiting for stakeholder approval.
+
+## Context Window Management
+
+### Task Sizing Guidelines
+- **Target Size**: Keep individual tasks and their associated files under 50% of the operating model's context window (typically ~50K-100K tokens for most models)
+- **File Constraints**: No single implementation file should exceed 500 lines or 25KB
+- **Context Budget**: Reserve 30% of context window for conversation history, tool outputs, and reasoning
+
+### Task Breakdown Strategy
+- **High-Level Planning**: Use spec-pseudocode or architect modes to create implementation outlines first
+- **Functional Chunks**: Break tasks into complete functional units (e.g., "implement user authentication" vs "add password field")
+- **API Boundaries**: Use natural system boundaries (components, modules, services) as task divisions
+- **Avoid Micromanagement**: Don't break tasks smaller than meaningful functional units
+
+### Context-Aware Execution
+- **Progressive Implementation**: Build systems incrementally, testing at each functional boundary
+- **Reference Management**: Use file paths and API documentation rather than embedding large code blocks
+- **Incremental Documentation**: Update docs as features are completed, not as monolithic tasks
 
 ```
 
@@ -122,6 +153,12 @@ Each file `tasks/<NNN>_<slug>.md` follows this schema:
 - ProvidedAPIs: [ list of doc paths ]
 - ConsumedAPIs: [ list of doc paths ]
 
+## Context Management
+- EstimatedContextTokens: <number> (for planning context budget)
+- ImplementationChunks: [list of functional units within this task]
+- PredecessorArtifacts: [files that must fit in context window]
+- ContextStrategy: "incremental" | "reference-based" | "outline-first"
+
 ## Git
 - BaseBranch: <main|develop>
 - FeatureBranch: feature/<NNN>-<slug>
@@ -142,6 +179,7 @@ Each file `tasks/<NNN>_<slug>.md` follows this schema:
 - Adheres to API contracts and documentation requirements
 - Includes or updates necessary tests
 - CI checks pass with no secrets or large binaries
+- Respects context window constraints and task sizing guidelines
 
 ## ErrorHandling
 - RevertStrategy: <steps to restore state>
