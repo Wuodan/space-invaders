@@ -7,3 +7,5 @@ node_modules/
 
 # may contain API-keys
 .roo/mcp.json
+
+.roomodes

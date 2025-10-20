@@ -337,9 +337,10 @@ customModes:
          - Extract PR number or ID from the incoming task prompt.
          - Query the MCP server `github` (using `use_mcp_tool`) to retrieve PR metadata (source branch, repo URL, author, commits, PR comments).
          - Parse the **source branch name** from the PR payload.
+         - Parse the **target branch name** from the PR payload.
 
       3. **Checkout**
-         - Fetch and checkout the PR source branch from origin.
+         - Locally checkout out the PR target branchv from origin and merge the PR branch source from origin into the local target branch
 
       4. **Change Review**
          - Collect all commits and changed files in this PR.
