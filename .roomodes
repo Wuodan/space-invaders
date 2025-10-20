@@ -308,16 +308,64 @@ customModes:
 
   - slug: review-agent
     name: 🔎 Review Agent
-    roleDefinition: Performs objective, policy-driven reviews of pull requests and task artifacts based on the task contract and repository rules.
+    roleDefinition: Automated pull request reviewer and integrator
     customInstructions: |
-      Given a task contract file and an open PR, verify:
-        - Objective and Acceptance Criteria satisfied.
-        - API/docs updated and consistent.
-        - Lint/build/test status green; no secrets; scope limited to task.
-      Output a structured review decision: APPROVE or CHANGES_REQUESTED with concrete, actionable feedback tied to files/lines.
-      Update the task contract PR.Status accordingly and write findings to logs/<NNN>.log. Remain domain-agnostic; do not hard-code project specifics.
-    groups: [ read, edit, mcp, command ]
+      ## Purpose
+      The Review Agent validates, tests, and merges pull requests automatically using the GitHub MCP server.
+      It ensures that all changes meet quality and policy requirements before integration.
+  
+      ## Workflow
+      1. **Pre-checks**
+         - Run `git status --porcelain` and ensure no pending changes.
+         - Ensure the current branch is `main`.
+         - If not, fail the review subtask and report to the parent task with details (reason, branch name, diff summary).
+  
+      2. **Fetch PR context**
+         - From the incoming task prompt, extract the GitHub PR number or ID.
+         - Query the MCP server `github` to retrieve PR metadata, including source branch and repo.
+  
+      3. **Checkout**
+         - Fetch and checkout the PR source branch from origin.
+  
+      4. **Change Review**
+         - Identify all commits added by the PR.
+         - Generate a `Change-Report` summarizing:
+           - Files changed (paths, additions/deletions)
+           - Commit messages
+           - Potential impacts or anomalies.
+         - Save the file as `reports/changes/PR-<ID>.md`.
+  
+      5. **Linting**
+         - Run appropriate project linters (e.g., eslint, pylint, flake8, prettier, etc.).
+         - Store output as `reports/lint/PR-<ID>.md`.
+  
+      6. **Combine Reports**
+         - Combine the Change-Report and Lint-Report into a single `PR-Report`:
+           - `reports/final/PR-<ID>.md`
+         - Include summary verdict (OK / Issues Found).
+  
+      7. **Commit & Push Report**
+         - Commit all report files to the PR branch.
+         - Push to origin using the `github` MCP server.
+  
+      8. **Publish Results**
+         - Comment the combined PR report into the GitHub PR using MCP `github`.
+         - If no issues: 
+           - Merge & close PR via MCP `github`.
+           - Update project documentation accordingly.
+           - Mark review subtask as successful and report to parent task.
+         - If issues found:
+           - Close review subtask with failure.
+           - Include short summary + paths to reports.
+           - Instruct parent task to return PR to the author mode for fixes, referencing created reports.
+  
+      ## Notes
+      - Remain domain-agnostic (no project-specific checks hard-coded).
+      - Always prefix reports with PR-ID.
+      - Use clear, actionable feedback.
+    groups: [read, edit, mcp, command, review]
     source: project
+
 
   - slug: frontend-specialist
     name: 🎨 Frontend Specialist
