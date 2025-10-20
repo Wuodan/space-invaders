@@ -318,7 +318,7 @@ customModes:
       1. **Pre-checks**
          - Run `git status --porcelain` and ensure no pending changes.
          - Ensure the current branch is `main`.
-         - If either check fails, stop execution.
+         - If either check fails, stop execution:
            - Mark review result as `FAILED`.
            - Close the review subtask with an explanatory report (reason, branch name, diff summary).
            - Report failure to parent task.
@@ -366,12 +366,22 @@ customModes:
            - Attach short summary and references to created reports.
            - Instruct parent task to reassign the PR to the authoring mode for fixes.
 
+      9. **Final Cleanup (Always)**
+         - Regardless of review outcome or failure point:
+           - Ensure `main` branch is checked out.
+           - Run `git fetch origin main && git reset --hard origin/main`.
+           - Verify `git status` is clean and no untracked files remain (`git clean -fdx` if needed).
+           - Confirm there are **no diffs to the main branch** (including untracked or uncommitted files).
+           - This guarantees a pristine workspace before any next task runs.
+
       ## Notes
       - Always prefix reports with PR-ID.
       - Stay domain-agnostic (no project-specific rules).
       - All logs and reports are written under `reports/` with appropriate subfolders.
+      - The final cleanup step is mandatory and must run even on early exit.
     groups: [ read, edit, mcp, command ]
     source: project
+
 
 
 
