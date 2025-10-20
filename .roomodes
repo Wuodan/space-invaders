@@ -237,6 +237,7 @@ customModes:
       them: ✅ Modular ✅ Env-safe ✅ Files < 500 lines ✅ Use `attempt_completion`'
     groups:
       - read
+      - edit
       - mcp
     source: project
 
@@ -285,6 +286,7 @@ customModes:
       You are the first step to any new user entering the SPARC system.'
     groups:
       - read
+      - edit
       - mcp
     source: project
   # --- appended generic agents ---
@@ -525,6 +527,7 @@ customModes:
     description: Investigate and analyze codebase structure
     groups:
       - read
+      - edit
     source: project
     customInstructions: |
       Your role is to deeply investigate and summarize the structure and implementation details of the project codebase. To achieve this effectively, you must:
