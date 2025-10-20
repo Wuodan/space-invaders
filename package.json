@@ -1,0 +1,21 @@
+{
+  "type": "module",
+  "dependencies": {},
+  "scripts": {
+    "lint:js": "eslint code/ui/script.js",
+    "lint:css": "stylelint code/ui/styles.css",
+    "lint:html": "htmlhint code/ui/index.html"
+  },
+  "devDependencies": {
+    "@eslint/css": "^0.13.0",
+    "@eslint/js": "^9.38.0",
+    "@eslint/json": "^0.13.2",
+    "@eslint/markdown": "^7.4.1",
+    "eslint": "^9.38.0",
+    "globals": "^16.4.0",
+    "typescript-eslint": "^8.46.2",
+    "htmlhint": "^1.7.1",
+    "stylelint": "^16.25.0",
+    "stylelint-config-standard": "^39.0.1"
+  }
+}
