@@ -8,7 +8,7 @@ It supports GitHub via MCP (mandatory), CLI fallback, and local simulation when 
 1. Branch creation per task (`feature/<NNN>-<slug>`).
 2. Commit work incrementally; push to remote.
 3. Open PR via MCP `pull_requests.create` (preferred) or CLI (`gh pr create`).
-4. Review performed by `review_agent`.
+4. Review performed by `review-agent`.
 5. If CHANGES_REQUESTED → agent fixes branch and re-pushes.
 6. When APPROVED → merge via MCP `pull_requests.merge` (squash).
 7. Coordinator updates `PROJECT_LOG.md`, `PROJECT_STATUS.md`, and task file.
@@ -44,7 +44,7 @@ MergeCommit: <sha or N/A>
 ## CI / Branch Protections
 CI_Gates:
   - All PRs must pass CI: build, tests, lint
-  - Base branch protection: squash-merge only; require 1 review by `review_agent`
+  - Base branch protection: squash-merge only; require 1 review by `review-agent`
   - No direct pushes to base branches
 
 

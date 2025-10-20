@@ -69,10 +69,10 @@ Defines all active agents, their roles, and the global execution policy.
 - module_specialist: ⚙️ Module Specialist – implements a technical module.
 - behavior_specialist: 🤖 Behavior Specialist – automation and behavior logic.
 - metrics_specialist: 📈 Metrics & Scoring Specialist – handles metrics and telemetry.
-- docs_architect: 📝 Docs Architect – maintains documentation and recovery files.
-- review_agent: 🔎 Review Agent – performs structured reviews of PRs and artifacts.
+- docs-architect: 📝 Docs Architect – maintains documentation and recovery files.
+- review-agent: 🔎 Review Agent – performs structured reviews of PRs and artifacts.
 - test_spec_author: 🧪 Test Spec Author – drafts formal test specifications.
-- test_writer: 🧪 Test Writer – authors failing tests first.
+- test-writer: 🧪 Test Writer – authors failing tests first.
 - planner: 🗺️ Product Planner – produces PRODUCT_SPEC, RESEARCH_NOTES, and PROJECT_PLAN.
 
 ## Task Graph (DAG)
@@ -132,7 +132,7 @@ Each file `tasks/<NNN>_<slug>.md` follows this schema:
   - Title: "[<NNN>] <Title>"
   - DescriptionFile: tasks/<NNN>_<slug>.md
   - Labels: ["subtask", "<AgentName>"]
-  - ReviewAgent: Review_Agent
+  - ReviewAgent: review-agent
   - Status: NOT_OPENED | OPEN | CHANGES_REQUESTED | APPROVED | MERGED
   - Url: <string>
 
@@ -190,7 +190,7 @@ For detailed automated Pull Request handling, see `/seed/GIT_PR_WORKFLOW.md`.
 - CI must pass before review.
 
 ### Reviews
-- Assigned to `Review_Agent`.
+- Assigned to `review-agent`.
 - Review compares code and documentation with task objectives.
 - Outcomes:
   - `APPROVED`: merge permitted.

@@ -85,7 +85,7 @@ customModes:
   - mcp
   - command
   source: project
-
+  
 - slug: debug
   name: 🪲 Debugger
   roleDefinition: You troubleshoot runtime bugs, logic errors, or integration failures
@@ -284,12 +284,12 @@ customModes:
   customInstructions: |
     Plan from a task graph (DAG) and execute sequentially by dependency. Use only file references for IPC.
     For each task: create/update contract under tasks/<NNN>_<slug>.md, write logs to logs/<NNN>.log, and maintain docs/PROJECT_LOG.md and docs/CRASH_RECOVERY.md.
-    Enforce: retry once on failure, then report upstream; branch per task (feature/<NNN>-<slug>); open PR; request review from Review_Agent; merge only after approval and green CI.
+    Enforce: retry once on failure, then report upstream; branch per task (feature/<NNN>-<slug>); open PR; request review from review-agent; merge only after approval and green CI.
     Never embed large artifacts in messages; write files to disk and point to paths. Keep actions idempotent and crash-safe.
   groups: [read, edit, mcp]
   source: project
 
-- slug: review_agent
+- slug: review-agent
   name: 🔎 Review Agent
   roleDefinition: Performs objective, policy-driven reviews of pull requests and task artifacts based on the task contract and repository rules.
   customInstructions: |
@@ -302,7 +302,7 @@ customModes:
   groups: [read, edit]
   source: project
 
-- slug: frontend_specialist
+- slug: frontend-specialist
   name: 🎨 Frontend Specialist
   roleDefinition: Designs and implements user-facing interfaces for web apps (HTML/CSS/JS/TS, component libraries), accessible and testable.
   customInstructions: |
@@ -311,7 +311,7 @@ customModes:
   groups: [read, edit, command, browser, mcp]
   source: project
 
-- slug: core_logic_specialist
+- slug: core-logic-specialist
   name: 🧠 Core Logic Specialist
   roleDefinition: Implements deterministic domain logic and state management with high test coverage and clear contracts.
   customInstructions: |
@@ -320,7 +320,7 @@ customModes:
   groups: [read, edit, command, mcp]
   source: project
 
-- slug: behavior_automation_specialist
+- slug: behavior-automation-specialist
   name: 🤖 Behavior & Automation Specialist
   roleDefinition: Builds rule-based/heuristic behaviors, schedulers, and automation flows; integrates with existing interfaces.
   customInstructions: |
@@ -329,7 +329,7 @@ customModes:
   groups: [read, edit, command, mcp]
   source: project
 
-- slug: metrics_scoring_specialist
+- slug: metrics-scoring-specialist
   name: 📈 Metrics & Scoring Specialist
   roleDefinition: Implements scoring/metrics/telemetry and persistence-neutral data flows with privacy and performance in mind.
   customInstructions: |
@@ -338,15 +338,16 @@ customModes:
   groups: [read, edit, command, mcp]
   source: project
 
-- slug: docs_architect
+- slug: docs-architect
   name: 📝 Docs Architect
-  roleDefinition: Owns structured documentation: task contracts, API specs, system architecture, and recovery procedures.
+  roleDefinition: 'Owns structured documentation: task contracts, API specs, system architecture, and recovery procedures.'
   customInstructions: |
     Maintain docs/PROJECT_PLAN.md, docs/SYSTEM_ARCHITECTURE.md, docs/PROJECT_LOG.md, docs/CRASH_RECOVERY.md, and docs/GIT_POLICY.md.
     Keep all docs synchronized with task outcomes and provide succinct change logs. Never embed sensitive data.
   groups: [read, edit, command, browser]
   source: project
-- slug: test_spec_author
+
+- slug: test-spec-author
   name: 🧪 Test Spec Author
   roleDefinition: Produces formal, behavior-driven test specifications independent of implementation details.
   customInstructions: |
@@ -358,7 +359,7 @@ customModes:
   groups: [read, edit]
   source: project
 
-- slug: test_writer
+- slug: test-writer
   name: 🧪 Test Writer
   roleDefinition: Implements failing tests from an approved test specification before any implementation code.
   customInstructions: |
@@ -369,6 +370,7 @@ customModes:
     Commit tests first on feature/<NNN>-<slug>, reference the spec artifact in the PR, and keep fixtures minimal and deterministic.
   groups: [read, edit, command, mcp]
   source: project
+
 - slug: planner
   name: 🗺️ Product Planner
   roleDefinition: Produces a concise, testable product specification and task graph based on research and stakeholder input.
