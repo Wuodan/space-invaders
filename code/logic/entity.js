@@ -100,7 +100,7 @@ class EntityBuilder {
       height: 12,
       lives: 3,
       score: 0,
-      update: function(deltaTime) {
+      update: function() {
         // Player logic handled separately
       }
     };
@@ -133,7 +133,7 @@ class EntityBuilder {
       height: height,
       points: points,
       enemyType: enemyType,
-      update: function(deltaTime) {
+      update: function() {
         // Movement handled by behavior system
       }
     };
@@ -162,7 +162,7 @@ class EntityBuilder {
       width: 40,
       height: 20,
       health: 100,
-      update: function(deltaTime) {
+      update: function() {
         if (this.health <= 0) {
           this.active = false;
         }

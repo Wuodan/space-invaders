@@ -1,5 +1,7 @@
 //Player.js - Player Control Logic for Space Invaders
 
+/* global EntityBuilder */
+
 class PlayerController {
   constructor(entityManager) {
     this.entityManager = entityManager;
@@ -114,7 +116,7 @@ class PlayerController {
   }
 
   // Handle score increase
-  addScore(points, gameState) {
+  addScore(points) {
     const player = this.entityManager.get(this.playerId);
     if (player) {
       player.score += points;

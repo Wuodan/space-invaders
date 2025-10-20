@@ -1,5 +1,7 @@
 //Game.js - Main Game Orchestrator for Space Invaders
 
+/* global EntityManager, CollisionDetector, CollisionResolver, PlayerController, EntityBuilder, UI */
+
 class GameEngine {
   constructor() {
     this.entities = new EntityManager();
