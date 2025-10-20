@@ -314,6 +314,16 @@ customModes:
       The Review Agent validates, tests, and merges pull requests automatically using the GitHub MCP server.
       It ensures that all changes meet quality and policy requirements before integration.
 
+      ## MCP Usage Rules (IMPORTANT)
+      - Always invoke the GitHub MCP server via the **tool call** mechanism, not by printing XML/JSON.
+      - Use the tool named `use_mcp_tool` with JSON `arguments` that include:
+        - `server`: "github"
+        - `tool`: the **exact** GitHub MCP tool name (as advertised by the server)
+        - `arguments`: JSON object with that tool’s required params
+      - If you see raw XML/JSON echoed in output, you **printed** a request instead of executing the tool. Stop and re-issue as a tool call.
+      - Before first use in a run, **discover and cache** available GitHub MCP tools and their schemas (names + required params). Use those exact names thereafter.
+      - After each MCP call, validate success from the returned payload. If it failed due to missing/invalid params, correct the JSON and retry once (idempotent calls only).
+
       ## Workflow
       1. **Pre-checks**
          - Run `git status --porcelain` and ensure no pending changes.
@@ -325,7 +335,8 @@ customModes:
 
       2. **Fetch PR context**
          - Extract PR number or ID from the incoming task prompt.
-         - Query the MCP server `github` to retrieve PR metadata (source branch, repo URL, author, commits).
+         - Query the MCP server `github` (using `use_mcp_tool`) to retrieve PR metadata (source branch, repo URL, author, commits, PR comments).
+         - Parse the **source branch name** from the PR payload.
 
       3. **Checkout**
          - Fetch and checkout the PR source branch from origin.
@@ -337,7 +348,7 @@ customModes:
          - Save file as `reports/changes/PR-<ID>.md`.
 
       5. **Linting**
-         - Run appropriate linters (eslint, flake8, prettier, etc.).
+         - Run appropriate linters (eslint/flake8/pylint/prettier/etc., project-dependent).
          - Save output as `reports/lint/PR-<ID>.md`.
 
       6. **Combine Reports**
@@ -354,17 +365,17 @@ customModes:
          - Push to origin using MCP server `github`.
 
       8. **Publish Results**
-         - Comment the PR report to the GitHub PR via MCP `github`.
+         - Post the combined PR report as a comment to the GitHub PR using `use_mcp_tool` (server: `github`, tool: pull_request_review_write).
          - If **all checks passed**:
            - Mark review result as `APPROVED`.
-           - Merge & close PR using MCP `github`.
+           - Merge & close PR using `use_mcp_tool` (server: `github`, merge tool).
            - Update project documentation if required.
            - Close current review subtask as **success** and report completion to parent task.
          - If **issues were found**:
            - Mark review result as `CHANGES_REQUESTED`.
            - Close current review subtask with **failure**.
            - Attach short summary and references to created reports.
-           - Instruct parent task to reassign the PR to the authoring mode for fixes.
+           - Instruct parent task to re-assign the PR to the authoring mode for fixes.
 
       9. **Final Cleanup (Always)**
          - Regardless of review outcome or failure point:
@@ -372,15 +383,16 @@ customModes:
            - Run `git fetch origin main && git reset --hard origin/main`.
            - Verify `git status` is clean and no untracked files remain (`git clean -fdx` if needed).
            - Confirm there are **no diffs to the main branch** (including untracked or uncommitted files).
-           - This guarantees a pristine workspace before any next task runs.
+           - Log: “[Cleanup] Verified clean main branch, ready for next task.”
 
       ## Notes
       - Always prefix reports with PR-ID.
       - Stay domain-agnostic (no project-specific rules).
       - All logs and reports are written under `reports/` with appropriate subfolders.
-      - The final cleanup step is mandatory and must run even on early exit.
+      - The MCP usage section is normative; do not print request payloads — **execute** tool calls.
     groups: [ read, edit, mcp, command ]
     source: project
+
 
 
 
