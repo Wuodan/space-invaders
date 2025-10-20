@@ -313,58 +313,66 @@ customModes:
       ## Purpose
       The Review Agent validates, tests, and merges pull requests automatically using the GitHub MCP server.
       It ensures that all changes meet quality and policy requirements before integration.
-  
+
       ## Workflow
       1. **Pre-checks**
          - Run `git status --porcelain` and ensure no pending changes.
          - Ensure the current branch is `main`.
-         - If not, fail the review subtask and report to the parent task with details (reason, branch name, diff summary).
-  
+         - If either check fails, stop execution.
+           - Mark review result as `FAILED`.
+           - Close the review subtask with an explanatory report (reason, branch name, diff summary).
+           - Report failure to parent task.
+
       2. **Fetch PR context**
-         - From the incoming task prompt, extract the GitHub PR number or ID.
-         - Query the MCP server `github` to retrieve PR metadata, including source branch and repo.
-  
+         - Extract PR number or ID from the incoming task prompt.
+         - Query the MCP server `github` to retrieve PR metadata (source branch, repo URL, author, commits).
+
       3. **Checkout**
          - Fetch and checkout the PR source branch from origin.
-  
+
       4. **Change Review**
-         - Identify all commits added by the PR.
-         - Generate a `Change-Report` summarizing:
-           - Files changed (paths, additions/deletions)
-           - Commit messages
-           - Potential impacts or anomalies.
-         - Save the file as `reports/changes/PR-<ID>.md`.
-  
+         - Collect all commits and changed files in this PR.
+         - Generate a **Change-Report**:
+           - Summarize changed paths, commit messages, potential issues or inconsistencies.
+         - Save file as `reports/changes/PR-<ID>.md`.
+
       5. **Linting**
-         - Run appropriate project linters (e.g., eslint, pylint, flake8, prettier, etc.).
-         - Store output as `reports/lint/PR-<ID>.md`.
-  
+         - Run appropriate linters (eslint, flake8, prettier, etc.).
+         - Save output as `reports/lint/PR-<ID>.md`.
+
       6. **Combine Reports**
-         - Combine the Change-Report and Lint-Report into a single `PR-Report`:
+         - Combine the Change-Report and Lint-Report into a unified **PR-Report**:
            - `reports/final/PR-<ID>.md`
-         - Include summary verdict (OK / Issues Found).
-  
+         - Include:
+           - Summary verdict
+           - Review decision: `APPROVED` or `CHANGES_REQUESTED`
+           - Key issues (if any)
+           - Next steps for the PR author.
+
       7. **Commit & Push Report**
-         - Commit all report files to the PR branch.
-         - Push to origin using the `github` MCP server.
-  
+         - Commit the reports to the PR branch.
+         - Push to origin using MCP server `github`.
+
       8. **Publish Results**
-         - Comment the combined PR report into the GitHub PR using MCP `github`.
-         - If no issues: 
-           - Merge & close PR via MCP `github`.
-           - Update project documentation accordingly.
-           - Mark review subtask as successful and report to parent task.
-         - If issues found:
-           - Close review subtask with failure.
-           - Include short summary + paths to reports.
-           - Instruct parent task to return PR to the author mode for fixes, referencing created reports.
-  
+         - Comment the PR report to the GitHub PR via MCP `github`.
+         - If **all checks passed**:
+           - Mark review result as `APPROVED`.
+           - Merge & close PR using MCP `github`.
+           - Update project documentation if required.
+           - Close current review subtask as **success** and report completion to parent task.
+         - If **issues were found**:
+           - Mark review result as `CHANGES_REQUESTED`.
+           - Close current review subtask with **failure**.
+           - Attach short summary and references to created reports.
+           - Instruct parent task to reassign the PR to the authoring mode for fixes.
+
       ## Notes
-      - Remain domain-agnostic (no project-specific checks hard-coded).
       - Always prefix reports with PR-ID.
-      - Use clear, actionable feedback.
-    groups: [read, edit, mcp, command, review]
+      - Stay domain-agnostic (no project-specific rules).
+      - All logs and reports are written under `reports/` with appropriate subfolders.
+    groups: [ read, edit, mcp, command ]
     source: project
+
 
 
   - slug: frontend-specialist
@@ -474,11 +482,11 @@ customModes:
     description: Create and implement custom modes.
     groups:
       - read
+      - command
+      - mcp
       - - edit
         - fileRegex: (\.roomodes$|\.roo/.*\.xml$|\.yaml$)
           description: Mode configuration files and XML instructions
-      - command
-      - mcp
     source: project
   - slug: merge-resolver
     name: 🔀 Merge Resolver
