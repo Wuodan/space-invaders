@@ -1,0 +1,2 @@
+2025-10-20T16:47:25.975Z: Task 002: Handle Pull Requests - FAILED
+Reason: Unable to proceed with the pull request review due to issues with the current approach. The `search_pull_requests` method on the `github` MCP server did not return the expected results. The subtask has been marked as `CHANGES_REQUESTED` with a structured review decision. The task contract PR.Status has been updated to reflect the failure. The parent task should restart the subtask with a different approach or additional information.
