@@ -2,6 +2,9 @@
   "type": "module",
   "dependencies": {},
   "scripts": {
+    "test": "nyc --reporter=lcov --reporter=text mocha code/testing/test_node.js",
+    "test:watch": "mocha code/testing/test_node.js --watch",
+    "coverage": "nyc --reporter=html --reporter=text mocha code/testing/test_node.js && echo 'Coverage report at coverage/lcov-report/index.html'",
     "lint:js": "eslint code/ui/script.js",
     "lint:css": "stylelint code/ui/styles.css",
     "lint:html": "htmlhint code/ui/index.html"
@@ -16,6 +19,10 @@
     "typescript-eslint": "^8.46.2",
     "htmlhint": "^1.7.1",
     "stylelint": "^16.25.0",
-    "stylelint-config-standard": "^39.0.1"
+    "stylelint-config-standard": "^39.0.1",
+    "jsdom": "^24.0.0",
+    "nyc": "^15.1.0",
+    "mocha": "^10.2.0",
+    "chai": "^4.3.10"
   }
 }
